@@ -53,7 +53,7 @@
 	    this.botR = botR;
 	    this.h = h;
 	    this.rs = rs;
-	    this.obj = new THREE.Mesh(new THREE.CylinderGeometry(this.topR,this.botR,this.h,this.rs),new THREE.MeshLambertMaterial({color:color}));
+	    this.obj = new THREE.Mesh(new THREE.CylinderGeometry(this.topR,this.botR,this.h,this.rs),new THREE.MeshBasicMaterial({color:color}));
 	    //this.pos = new THREE.Vector3(pos.x,pos.y,pos.z);
 	    //this.obj.position.set(pos.x,pos.y,pos.z);
 	    this.obj.position.y = 2;
@@ -170,7 +170,7 @@
 	      	force = new THREE.Vector3(0,0,0);
 	        vel = new THREE.Vector3(random,0,random1);
 	        pos = new THREE.Vector3(0,0,0);
-	      	puck1 = new puck(15,15,4,20,force,vel,pos,0x9900ff);
+	      	puck1 = new puck(15,15,4,20,force,vel,pos,0x9988ff);
 	      	break;
 	     	case 4:
 	      	force = new THREE.Vector3(0,0,0);
