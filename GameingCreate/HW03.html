@@ -22,8 +22,8 @@
 </style>
 </header>
 <body>
-	<audio id="collisionsound" style="display:none">
-		<source src="sounds/Way_Back_Home.mp3" type='audio/wav'>
+	<audio id="walksound" style="display:none" muted autoplay>
+		<source src="sounds/Way_Back_Home.mp3" type='audio/mpeg' >
 	</audio>
  	<script src="https://threejs.org/build/three.min.js"></script>
 	<script src="https://threejs.org/examples/js/controls/OrbitControls.js">
@@ -39,6 +39,7 @@
 		var theta = 0.00;
 		var gcontrol;
 		var gyro;
+		var audio;
 		////////////////////
 		var theta1 = 0,
 		  theta2 = 0;
@@ -55,7 +56,7 @@
 		  [0.5, pose2],
 		  [1, pose1]
 		];
-		var T = 120/112;
+		var T = 120/105;
 		var clock = new THREE.Clock();
 		var ts = clock.getElapsedTime();  // start time
 		var intKey = [];
@@ -134,6 +135,10 @@
 		  scene.add (gyro);
 		  gyro.add (camera);
 		  mine.add (gyro);
+		  ////////////////////////////////////
+		  audio = document.getElementById("walksound");
+		  audio.muted = false;
+        	
 		}
 
 		function makeArm(pos) {
@@ -292,9 +297,10 @@
 
 		}
 		function animate() {
+			
 			theta += 0.01;
 		  mine.rotation.y = Math.PI/16 + theta;
-		  mine.position.set(90*Math.cos(theta),0,-90*Math.sin(theta));
+		  mine.position.set(120*Math.cos(theta),0,-120*Math.sin(theta));
 		//	head.rotation.y = Math.PI/6;
 		  keyframe(clock.getElapsedTime()); 
 		  arm.rotation.y = intKey[0]//gcontrol.theta1; //Math.PI/4;
@@ -303,7 +309,7 @@
 		  leg1.rotation.y = intKey[0];
 		  requestAnimationFrame(animate);
 		  renderer.render (scene, camera);
-
+		  audio.play();
 		}
 
 		function loadJSON() {
