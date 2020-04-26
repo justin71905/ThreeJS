@@ -40,7 +40,8 @@
 
 	var clock = new THREE.Clock();
 	var now = 0;
-
+	var previousEnd_puck = new THREE.Vector3();
+	var hit = false;
 	var previousEnd = new THREE.Vector3();
 	var previousEnd1 = new THREE.Vector3();
 	/////////////////////////
@@ -183,8 +184,7 @@
 	  scene.add(puckLight);
 	  puck1.force = new THREE.Vector3(0,0,0);
 	  puck1.vel = new THREE.Vector3(0,0,0);
-	  //puck1.pos = new THREE.Vector3();
-	  puck1.pos = new THREE.Vector3(0,5,100);
+	  puck1.pos = new THREE.Vector3();
 	  //puck1.position.y = 5;
 	  ////////////////////////
 	  var wall1;
@@ -300,18 +300,38 @@
 	  var distance = puck1.pos.clone().sub(endNow).length();
 	  //console.log(puck1.pos.clone().sub(endNow)); 
 	  if(distance < 20){
-	    audio = document.getElementById("collisionsound");
+	  	audio = document.getElementById("collisionsound");
 	    audio.play();
-	    var offset = ((20 - distance)/2)/distance;
-	    //console.log(offset);
-	    var Voffset1 = puck1.pos.clone().sub(endNow.clone()).multiplyScalar(offset);
-	    //console.log(Voffset1);
-	    var v = puck1.vel.clone().sub(puck1.pos.clone().sub(endNow).multiplyScalar(puck1.vel.clone().sub(vel).dot(puck1.pos.clone().sub(endNow))/Math.pow(puck1.pos.clone().sub(endNow).length(),2)));
-	    console.log(v);
-	    puck1.pos.add(Voffset1);
+	    if(hit != true){
+	    	hit = true;
+	      var offset = ((20 - distance)/2)/distance;
+	      //console.log(offset);
+	      var Voffset1 = puck1.pos.clone().sub(endNow.clone()).multiplyScalar(offset);
+	      //console.log(Voffset1);
+	      //console.log(previousEnd_puck);
+	     
+	      
+	      puck1.pos.add(Voffset1);
+	      var v = puck1.pos.clone().sub(previousEnd_puck.clone()).multiplyScalar(5/dt);
+	      //twoLinker0.puck.position.sub(Voffset1);
+	      
+	      //console.log(puck1.pos);
+	      //console.log(v);
+	      puck1.vel.copy(v);
+	    }
+	    else{
+	    	var offset = ((20 - distance)/2)/distance;
+	      //console.log(offset);
+	      var Voffset1 = puck1.pos.clone().sub(endNow.clone()).multiplyScalar(offset);
+	      //console.log(Voffset1);
+	      var v = puck1.vel.clone().sub(puck1.pos.clone().sub(endNow).multiplyScalar(puck1.vel.clone().sub(vel).dot(puck1.pos.clone().sub(endNow))/Math.pow(puck1.pos.clone().sub(endNow).length(),2)));
+	      //console.log(v);
+	      puck1.pos.add(Voffset1);
+
+	      //twoLinker0.puck.position.sub(Voffset1);
+	      puck1.vel.copy(v);
+	    }
 	    
-	    //twoLinker0.puck.position.sub(Voffset1);
-	    puck1.vel.copy(v);
 	  }
 	  /////////////////////////////////
 	  var distance1 = puck1.pos.clone().sub(endNow1).length();
@@ -397,7 +417,7 @@
 		now = newTime;
 		previousEnd.copy (endNow);
 	  previousEnd1.copy (endNow1);
-	  
+	  previousEnd_puck.copy(puck1.pos);
 	}
 
 
@@ -418,6 +438,11 @@
 	  var intersects = raycaster.intersectObjects(pickables);
 	  if (intersects.length > 0) {
 	    puck.position.copy(intersects[0].point);
+	    if(hit == false){
+	    	puck1.pos.copy(intersects[0].point);
+	    	puck1.pos.y = 5;
+	      //console.log(puck1.pos);
+	    }
 	    //twoLinker.target.copy (intersects[0].point);
 	    // this is not enough ...
 	    puck1.position.copy(intersects[0].point);
