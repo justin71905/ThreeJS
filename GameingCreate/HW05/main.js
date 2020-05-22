@@ -56,7 +56,7 @@ function animate() {
   	requestAnimationFrame(animate);
   else{
     var posx,posy,posz;
-    var flag = true;
+    var flag = true,count = 0;
     while(flag){
       posx = Math.random()*(400-(-400))+(-400);
       //console.log("x = ",x);
@@ -64,16 +64,19 @@ function animate() {
       posz = Math.random()*(400-(-400))+(-400);
       //console.log("posx1 = "+posx,"posy1 = "+posy,"posz1 = "+posz);
       for(let i = 0;i < scene.obstacles.length; i++){
-        var tmpx = Math.abs(posx - scene.obstacles[i].x);
-        var tmpy = Math.abs(posy - scene.obstacles[i].y);
-        var tmpz = Math.abs(posz - scene.obstacles[i].z);
-        if(tmpx <= 20 || tmpy <= 20 || tmpz <= 20){
-          continue;
+        var tmp = new THREE.Vector3(posx,posy,posz);
+        var dist = scene.obstacles[i].center.distanceTo(tmp);
+        console.log(tmp,scene.obstacles[i].center);
+        if(dist <= scene.obstacles[i].size+20){
+          count++;
         }
-        else{
-          flag = false;
-          break;
-        }
+        
+      }
+      if(count > 0){
+        flag = true;
+      }
+      else{
+        flag = false;
       }
       //console.log("x = "+posx,"y = "+posy,"z = "+posz);
     }

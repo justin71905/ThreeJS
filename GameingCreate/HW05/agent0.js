@@ -67,7 +67,7 @@ class Agent {
       let vhat = this.vel.clone().normalize();
       let point = ob.center.clone().sub (this.pos) // c-p
       let proj  = point.dot(vhat);
-      const REACH = 50
+      const REACH = ob.size;
       const K = 5
       if(proj > 0 && proj < REACH && proj < minDistance){
         projMin = i;
@@ -79,7 +79,7 @@ class Agent {
       let vhat = this.vel.clone().normalize();
       let point = ob.center.clone().sub (this.pos) // c-p
       let proj  = point.dot(vhat);
-      const REACH = 50
+      const REACH = ob.size;
       const K = 5
       let perp = new THREE.Vector3();
       perp.subVectors (point, vhat.clone().setLength(proj));
