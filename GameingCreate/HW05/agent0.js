@@ -61,6 +61,7 @@ class Agent {
     // pick the most threatening one
     // apply the repulsive force
     // (write your code here)
+    var projMin = -1,minDistance = 100000;
     for(let i = 0;i < obs.length; i++){
       let ob = obs[i];
       let vhat = this.vel.clone().normalize();
@@ -68,16 +69,26 @@ class Agent {
       let proj  = point.dot(vhat);
       const REACH = 50
       const K = 5
-      if (proj > 0 && proj < REACH) {
-        let perp = new THREE.Vector3();
-        perp.subVectors (point, vhat.clone().setLength(proj));
-        let overlap = ob.size + this.halfSize - perp.length()
-        if (overlap > 0) {
-          perp.setLength (K*overlap);
-          perp.negate()
-          this.force.add (perp);
-          console.log ("hit:", perp);
-        }
+      if(proj > 0 && proj < REACH && proj < minDistance){
+        projMin = i;
+        minDistance = proj;
+      }
+    }
+    if (projMin > -1 && minDistance > 0) {
+      let ob = obs[projMin];
+      let vhat = this.vel.clone().normalize();
+      let point = ob.center.clone().sub (this.pos) // c-p
+      let proj  = point.dot(vhat);
+      const REACH = 50
+      const K = 5
+      let perp = new THREE.Vector3();
+      perp.subVectors (point, vhat.clone().setLength(proj));
+      let overlap = ob.size + this.halfSize - perp.length()
+      if (overlap > 0) {
+        perp.setLength (K*overlap);
+        perp.negate()
+        this.force.add (perp);
+        console.log ("hit:", perp);
       }
     }
     
