@@ -56,8 +56,9 @@ function animate() {
   	requestAnimationFrame(animate);
   else{
     var posx,posy,posz;
-    var flag = true,count = 0;
+    var flag = true;
     while(flag){
+      var count = 0
       posx = Math.random()*(400-(-400))+(-400);
       //console.log("x = ",x);
       posy = (Math.random()*(400-(-400))+(-400))*Math.pow(10,-13);
